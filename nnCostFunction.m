@@ -24,6 +24,8 @@ Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):en
 
 % Setup some useful variables
 m = size(X, 1);
+X_width = size(X,2);
+T1_depth = size(Theta1,1);
 
 ascending_numbers = 1:num_labels;
 
@@ -54,10 +56,14 @@ for k = 1:m
   target_label = ascending_numbers == y(k);
 
   J = J + sum( (-target_label * log( layer_2_out(k,:)' )) - ( 1 - target_label ) * log( 1 - layer_2_out(k,:)' ));
-  
+
 end
 
-J = 1 / m * J;
+inner_reg = sum(sum(Theta1(:,2:end).^2)') + sum(sum(Theta2(:,2:end).^2)')
+
+regularization_term = lambda / (2 * m) * inner_reg
+
+J = 1 / m * J + regularization_term;
 
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
