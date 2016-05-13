@@ -94,9 +94,21 @@ big_delta_1 = delta_2' * biased_input;
 
 big_delta_2 = delta_3' * biased_layer_1;
 
+Theta1(:,1) = 0 ;
+
+Theta2(:,1) = 0 ;
+
+T_1_reg = (lambda / m) * Theta1;
+
+T_2_reg = (lambda / m) * Theta2;
+
 Theta1_grad = (1 / m) * big_delta_1;
 
 Theta2_grad = (1 / m) * big_delta_2;
+
+Theta1_grad = Theta1_grad + T_1_reg;
+
+Theta2_grad = Theta2_grad + T_2_reg;
 
 
 % Part 3: Implement regularization with the cost function and gradients.
