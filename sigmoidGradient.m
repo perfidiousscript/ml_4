@@ -14,7 +14,8 @@ g = zeros(size(z));
 
 
 
-
+% Derivitive of the sigmoid function
+  g = sigmoid(z) .* ( 1 - sigmoid(z) );
 
 
 

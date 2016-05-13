@@ -45,7 +45,9 @@ Theta2_grad = zeros(size(Theta2));
 
 biased_input = [ones(m,1),X];
 
-layer_1_out = sigmoid( biased_input * Theta1' );
+z_2 = biased_input * Theta1';
+
+layer_1_out = sigmoid( z_2 );
 
 biased_layer_1 = [ones(size(layer_1_out,1),1),layer_1_out];
 
@@ -59,9 +61,9 @@ for k = 1:m
 
 end
 
-inner_reg = sum(sum(Theta1(:,2:end).^2)') + sum(sum(Theta2(:,2:end).^2)')
+inner_reg = sum(sum(Theta1(:,2:end).^2)') + sum(sum(Theta2(:,2:end).^2)');
 
-regularization_term = lambda / (2 * m) * inner_reg
+regularization_term = lambda / (2 * m) * inner_reg;
 
 J = 1 / m * J + regularization_term;
 
@@ -81,6 +83,22 @@ J = 1 / m * J + regularization_term;
 %               over the training examples if you are implementing it for the
 %               first time.
 %
+
+y_matrix = y == ascending_numbers;
+
+delta_3 = layer_2_out - y_matrix;
+
+delta_2 = (delta_3 * Theta2(:,2:end)) .* sigmoidGradient(z_2);
+
+big_delta_1 = delta_2' * biased_input;
+
+big_delta_2 = delta_3' * biased_layer_1;
+
+Theta1_grad = (1 / m) * big_delta_1;
+
+Theta2_grad = (1 / m) * big_delta_2;
+
+
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
